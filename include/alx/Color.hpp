@@ -299,9 +299,9 @@ public:
         @param alpha initial value of the alpha color component.
      */
     void set(int red, int green, int blue, int alpha = 255) {
-        m_color.m_red   = std::max(0, std::min(red, 255));
-        m_color.m_green = std::max(0, std::min(green, 255));
-        m_color.m_blue  = std::max(0, std::min(blue , 255));
+        m_color.m_red   = std::max(0, std::min(red, 255)) * alpha / 255;
+        m_color.m_green = std::max(0, std::min(green, 255)) * alpha / 255;
+        m_color.m_blue  = std::max(0, std::min(blue , 255)) * alpha / 255;
         m_color.m_alpha = std::max(0, std::min(alpha, 255));
     }
 
@@ -313,9 +313,9 @@ public:
         @param alpha initial value of the alpha color component.
      */
     void set(float red, float green, float blue, float alpha = 1.0f) {
-        m_color.m_red   = _floatToInt(red  );
-        m_color.m_green = _floatToInt(green);
-        m_color.m_blue  = _floatToInt(blue );
+        m_color.m_red   = _floatToInt(red * alpha);
+        m_color.m_green = _floatToInt(green * alpha);
+        m_color.m_blue  = _floatToInt(blue * alpha);
         m_color.m_alpha = _floatToInt(alpha);
     }
 

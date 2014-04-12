@@ -2,6 +2,7 @@
 #define ALX_BITMAP_HPP
 
 
+#include <string>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include "alx/Shared.hpp"
@@ -69,6 +70,13 @@ public:
      */
     Bitmap(const char *filename) : Shared(al_load_bitmap(filename), al_destroy_bitmap) {
     }
+	
+	/**
+		Loads a bitmap from file.
+		@param filename filename.
+	 */
+	Bitmap(std::string filename) : Shared(al_load_bitmap(filename.c_str()), al_destroy_bitmap) {
+	}
 
     /**
         Loads a bitmap from file.
@@ -439,6 +447,15 @@ public:
      */
     bool load(const char *filename) {
         reset(al_load_bitmap(filename), al_destroy_bitmap);
+        return (bool)(*this);
+    }
+
+    /**
+        loads a bitmap from a file.
+        @param filename filename.
+     */
+    bool load(const std::string &filename) {
+        reset(al_load_bitmap(filename.c_str()), al_destroy_bitmap);
         return (bool)(*this);
     }
 

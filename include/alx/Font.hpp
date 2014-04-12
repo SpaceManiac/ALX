@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <tuple>
+#include <string>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include "alx/String.hpp"
@@ -34,6 +35,17 @@ public:
      */
     Font(const char *filename, int size, int flags = 0) :
         Shared(al_load_font(filename, size, flags), al_destroy_font)
+    {
+    }
+
+    /**
+        Constructor from file.
+        @param filename name of file.
+        @param size size in points.
+        @param flags font flags.
+     */
+    Font(const std::string &filename, int size, int flags = 0) :
+        Shared(al_load_font(filename.c_str(), size, flags), al_destroy_font)
     {
     }
 
@@ -70,6 +82,15 @@ public:
     }
 
     /**
+        Bitmap font constructor from file.
+        @param filename name of file.
+     */
+    Font(std::string filename) :
+        Shared(al_load_bitmap_font(filename.c_str()), al_destroy_font)
+    {
+    }
+
+    /**
         Creates a font from a bitmap.
         @param bmp bitmap.
         @param ranges ranges.
@@ -85,6 +106,15 @@ public:
      */
     int getWidth(const char *str) const {
         return al_get_text_width(get(), str);
+    }
+
+    /**
+        Returns the pixel width of the given string for this font.
+        @param str null-terminated string.
+        @return pixel width of the given text.
+     */
+    int getWidth(const std::string &str) const {
+        return al_get_text_width(get(), str.c_str());
     }
 
     /**
@@ -136,6 +166,17 @@ public:
         @param text text.
         @return dimensions.
      */
+    Rect<int> getDimensions(const std::string &text) const {
+        int x, y, w, h;
+        al_get_text_dimensions(get(), text.c_str(), &x, &y, &w, &h);
+        return makeRect(makePoint(x, y), makeSize(w, h));
+    }
+
+    /**
+        Retrieves the actual dimensions of text.
+        @param text text.
+        @return dimensions.
+     */
     Rect<int> getDimensions(const String &text) const {
         int x, y, w, h;
         al_get_ustr_dimensions(get(), text.get(), &x, &y, &w, &h);
@@ -163,6 +204,29 @@ public:
      */
     void draw(float x, float y, ALLEGRO_COLOR color, const char *text) const {
         draw(x, y, 0, color, text);
+    }
+
+    /**
+        Draws text using this font, with flags = 0.
+        @param x target x coordinate.
+        @param y target y coordinate.
+        @param color color.
+        @param text null-terminated string to draw.
+     */
+    void draw(float x, float y, ALLEGRO_COLOR color, const std::string &text) const {
+        draw(x, y, 0, color, text.c_str());
+    }
+
+    /**
+        Draws text using this font.
+        @param x target x coordinate.
+        @param y target y coordinate.
+        @param flags flags.
+        @param color color.
+        @param text null-terminated string to draw.
+     */
+    void draw(float x, float y, int flags, ALLEGRO_COLOR color, const std::string& text) const {
+        al_draw_text(get(), color, x, y, flags, text.c_str());
     }
 
     /**

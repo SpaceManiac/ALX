@@ -5,3 +5,5 @@ doc/
 *.depend
 *.layout
 
+ALX.*
+.gitignore
